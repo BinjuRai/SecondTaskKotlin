@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "546641033538",
+    "project_id": "secondtaskkotlin",
+    "storage_bucket": "secondtaskkotlin.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:546641033538:android:f433516e6cd670900370db",
+        "android_client_info": {
+          "package_name": "com.example.secondtask"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyC5f2QCwVUXOqA4rCWbROEN5Ah6rxXXb54"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

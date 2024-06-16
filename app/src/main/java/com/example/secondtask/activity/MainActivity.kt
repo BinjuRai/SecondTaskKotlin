@@ -19,3 +19,8 @@ class MainActivity : AppCompatActivity() {
         }
     }
 }
+
+//git status
+// git add .
+// git commit -m "notes.."
+//git push -u origin main
