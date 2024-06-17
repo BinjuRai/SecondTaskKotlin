@@ -1,8 +1,9 @@
-package com.example.crud.utils
+package com.example.secondtask.utils
 
 import android.app.Activity
 import android.app.AlertDialog
-import com.example.crud.R
+import com.example.secondtask.R
+
 
 class LoadingUtils (val activity: Activity){
     lateinit var alertDialog: AlertDialog

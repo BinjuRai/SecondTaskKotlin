@@ -1,4 +1,4 @@
-package com.example.crud.ui.activity
+package com.example.secondtask.activity
 
 import android.content.Intent
 import android.os.Bundle
@@ -7,8 +7,12 @@ import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
-import com.example.crud.R
-import com.example.crud.databinding.ActivityMainBinding
+
+
+import com.example.secondtask.R
+import com.example.secondtask.databinding.ActivityMainBinding
+import com.example.secondtask.ui.activity.DashboardActivity
+import com.example.secondtask.ui.activity.ForgetActivity
 import com.google.firebase.auth.FirebaseAuth
 
 class MainActivity : AppCompatActivity() {
