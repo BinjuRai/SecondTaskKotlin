@@ -131,7 +131,7 @@ class UpdateUserActivity : AppCompatActivity() {
                     updateUser(imageUrl.toString())
                 }
             }
-            var data = UserModel("", name = "", email = "", phone = 0, url = "", imageName)
+            val data = UserModel(id, imageName)
 
             userViewModel.uploadImage(data) { success, message ->
                 if (success) {

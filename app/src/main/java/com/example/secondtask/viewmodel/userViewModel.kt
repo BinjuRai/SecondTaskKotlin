@@ -14,7 +14,7 @@ class userViewModel(val repository: UserRepository) : ViewModel() {
         repository.updateProduct(id,data,callback)
     }
 
-    fun uploadImage(imageName:String,imageUrl: Uri, callback: (Boolean,  String?) -> Unit) {
+    fun uploadImage(imageName: UserModel, imageUrl: Uri, callback: (Boolean, String?) -> Unit) {
         repository.uploadImage(imageName, imageUrl){
                 success,imageUrl ->
             callback(success,imageUrl)
