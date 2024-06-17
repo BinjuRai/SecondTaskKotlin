@@ -1,4 +1,4 @@
-package com.example.secondtask.activity
+package com.example.secondtask.ui.activity
 
 import android.os.Bundle
 import androidx.activity.enableEdgeToEdge
