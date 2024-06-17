@@ -15,6 +15,7 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import com.example.secondtask.databinding.ActivityUpdateUserBinding
+import com.example.secondtask.utils.LoadingUtils
 
 import com.example.secondtask.viewmodel.userViewModel
 
@@ -26,17 +27,16 @@ class UpdateUserActivity : AppCompatActivity() {
     var firebaseDatabase: FirebaseDatabase = FirebaseDatabase.getInstance()
     var ref = firebaseDatabase.reference.child("user")
 
-    lateinit var updateUserBinding:ActivityUpdateUserBinding
-
+    lateinit var updateUserBinding: ActivityUpdateUserBinding
 
 
     var id = ""
-    var imageName= ""
+    var imageName = ""
 
-    lateinit var activityResultLauncher : ActivityResultLauncher<Intent>
-    var imageUri : Uri? = null
+    lateinit var activityResultLauncher: ActivityResultLauncher<Intent>
+    var imageUri: Uri? = null
 
-    lateinit var  userViewModel: userViewModel
+    lateinit var userViewModel: userViewModel
 
     lateinit var editBinding: EditUserBinding
 
@@ -51,13 +51,14 @@ class UpdateUserActivity : AppCompatActivity() {
     ) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults)
 
-        if(requestCode == 1 && grantResults.isNotEmpty() && grantResults[0] == PackageManager.PERMISSION_GRANTED){
+        if (requestCode == 1 && grantResults.isNotEmpty() && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
             val intent = Intent()
             intent.type = "image/*"
             intent.action = Intent.ACTION_GET_CONTENT
             activityResultLauncher.launch(intent)
         }
     }
+
     lateinit var imageUtils: ImageUtils
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -76,7 +77,7 @@ class UpdateUserActivity : AppCompatActivity() {
 
             Picasso.get().load(it).into(updateUserBinding.ImageViewU)
         }
-        var user: UserModel?= intent.getParcelableExtra("user")
+        var user: UserModel? = intent.getParcelableExtra("user")
         id = user?.id.toString()
         imageName = user?.imageName.toString()
         updateUserBinding.editUEmail.setText(user?.email)
@@ -99,40 +100,55 @@ class UpdateUserActivity : AppCompatActivity() {
             insets
         }
     }
-    fun updateUser(url:String){
-        var updatedemail : String = updateUserBinding.editUEmail.text.toString()
-        var updatednumber : Int = updateUserBinding.editUNumber.text.toString().toInt()
-        var updatedpassword : String = updateUserBinding.editUPassword.text.toString()
 
-        var data = mutableMapOf<String,Any>()
-        data["email"]= updatedemail
-        data["number"]= updatednumber
-        data["password"]= updatedpassword
-        data["url"]= url
+    fun updateUser(url: String) {
+        var updatedemail: String = updateUserBinding.editUEmail.text.toString()
+        var updatednumber: Int = updateUserBinding.editUNumber.text.toString().toInt()
+        var updatedpassword: String = updateUserBinding.editUPassword.text.toString()
 
-        userViewModel.updateUser(id,data){
-            success,message->
-            if (success){
-                Toast.makeText(applicationContext,message, Toast.LENGTH_LONG).show()
-            }else{
-                Toast.makeText(applicationContext,message, Toast.LENGTH_LONG).show()
+        var data = mutableMapOf<String, Any>()
+        data["email"] = updatedemail
+        data["number"] = updatednumber
+        data["password"] = updatedpassword
+        data["url"] = url
+
+        userViewModel.updateUser(id, data) { success, message ->
+            if (success) {
+                Toast.makeText(applicationContext, message, Toast.LENGTH_LONG).show()
+            } else {
+                Toast.makeText(applicationContext, message, Toast.LENGTH_LONG).show()
             }
 
-           }
-
         }
+
+    }
 
 
     fun uploadImage() {
-    imageUri?.let {
-        userViewModel.uploadImage(imageName, it){
-                success, imageUrl ->
-            if (success){
-                updateUser(imageUrl.toString())
+        imageUri?.let {
+            userViewModel.uploadImage(imageName, it) { success, imageUrl ->
+                if (success) {
+                    updateUser(imageUrl.toString())
+                }
             }
-        }
-    }
+            var data = UserModel("", name = "", email = "", phone = 0, url = "", imageName)
 
+            userViewModel.uploadImage(data) { success, message ->
+                if (success) {
+                    LoadingUtils.dismiss()
+                    Toast.makeText(applicationContext, message, Toast.LENGTH_LONG).show()
+                    finish()
+                } else {
+                    LoadingUtils.dismiss()
+                    Toast.makeText(applicationContext, message, Toast.LENGTH_LONG).show()
+                }
+
+            }
+
+
+        }
+
+    }
 }
-}
+
 

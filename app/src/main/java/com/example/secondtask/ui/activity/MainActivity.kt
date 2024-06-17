@@ -2,6 +2,7 @@ package com.example.secondtask.activity
 
 import android.content.Intent
 import android.os.Bundle
+import android.widget.Toast
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.ViewCompat
@@ -31,11 +32,46 @@ class MainActivity : AppCompatActivity() {
             var intent = Intent(this@MainActivity, RegistrationActivity::class.java
             )
             startActivity(intent)
+            var email:String=mainBinding.editEmail.text.toString()
+            var password:String=mainBinding.editPassword.text.toString()
+
+            auth.createUserWithEmailAndPassword(email,password).
+            addOnCompleteListener {
+                if(it.isSuccessful){
+                    Toast.makeText(applicationContext,"Login Sucessfull", Toast.LENGTH_LONG).show()
+
+                    //navigate to dashboard
+                    var intent=Intent(this@MainActivity, LoginActivity::class.java)
+                    startActivity(intent)
+                }else{
+                    Toast.makeText(applicationContext,it.exception?.message, Toast.LENGTH_LONG).show()
+
+                }
+            }
         }
+
+
+
 
         mainBinding.butlogin.setOnClickListener {
             var intent = Intent(this@MainActivity, LoginActivity::class.java)
             startActivity(intent)
+            var email:String=mainBinding.editEmail.text.toString()
+            var password:String=mainBinding.editPassword.text.toString()
+
+            auth.createUserWithEmailAndPassword(email,password).
+            addOnCompleteListener {
+                if(it.isSuccessful){
+                    Toast.makeText(applicationContext,"Registration Sucessfull", Toast.LENGTH_LONG).show()
+
+                    //navigate to dashboard
+                    var intent=Intent(this@MainActivity, LoginActivity::class.java)
+                    startActivity(intent)
+                }else{
+                    Toast.makeText(applicationContext,it.exception?.message, Toast.LENGTH_LONG).show()
+
+                }
+            }
         }
 
 
