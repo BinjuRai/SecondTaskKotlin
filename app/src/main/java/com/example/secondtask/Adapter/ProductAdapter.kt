@@ -10,14 +10,16 @@ import android.widget.ProgressBar
 import android.widget.TextView
 import android.widget.Toast
 import androidx.recyclerview.widget.RecyclerView
-import com.example.crud.R
-import com.example.crud.ui.activity.UpdateProductActivity
-import com.example.crud.model.ProductModel
+
+
+import com.example.crud.model.UserModel
+import com.example.secondtask.R
+import com.example.secondtask.activity.UpdateProductActivity
 import com.squareup.picasso.Callback
 import com.squareup.picasso.Picasso
 import java.lang.Exception
 
-class ProductAdapter (var context:Context,var data: ArrayList<ProductModel>)
+class ProductAdapter (var context:Context,var data: ArrayList<UserModel>)
     :RecyclerView.Adapter<ProductAdapter.ProductViewHolder>(){
     class ProductViewHolder(view: View):RecyclerView.ViewHolder(view){
         var productName :TextView=view.findViewById(R.id.productName)
@@ -66,7 +68,7 @@ class ProductAdapter (var context:Context,var data: ArrayList<ProductModel>)
     fun getImageName(position: Int):String{
         return data[position].imageName
     }
-    fun updateData(products:List<ProductModel>){
+    fun updateData(products:List<UserModel>){
         data.clear()
         data.addAll(products)
         notifyDataSetChanged()

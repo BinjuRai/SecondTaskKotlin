@@ -4,9 +4,7 @@ package com.example.secondtask.repository
 
 import android.net.Uri
 import android.util.Log
-import android.widget.Toast
-import androidx.recyclerview.widget.LinearLayoutManager
-import com.example.crud.model.ProductModel
+import com.example.crud.model.UserModel
 import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.FirebaseDatabase
@@ -14,7 +12,6 @@ import com.google.firebase.database.FirebaseDatabase
 import com.google.firebase.database.ValueEventListener
 import com.google.firebase.storage.FirebaseStorage
 import com.google.firebase.storage.StorageReference
-import java.util.UUID
 
 class ProductRepositoryImpl: ProductRepository {
     var firebaseDatabase: FirebaseDatabase = FirebaseDatabase.getInstance()
@@ -40,7 +37,7 @@ class ProductRepositoryImpl: ProductRepository {
     }
 
 
-    override fun addProduct(productModel: ProductModel, callback: (Boolean, String?) -> Unit) {
+    override fun addProduct(productModel: UserModel, callback: (Boolean, String?) -> Unit) {
 
         var id = ref.push().key.toString()
 
@@ -57,14 +54,14 @@ class ProductRepositoryImpl: ProductRepository {
         }
     }
 
-    override fun getAllProduct(callback: (List<ProductModel>?, Boolean, String?) -> Unit) {
+    override fun getAllProduct(callback: (List<UserModel>?, Boolean, String?) -> Unit) {
         ref.addValueEventListener(object :
             ValueEventListener {
             override fun onDataChange(snapshot: DataSnapshot) {
-                var productList = mutableListOf<ProductModel>()
+                var productList = mutableListOf<UserModel>()
 
                 for (eachData in snapshot.children) {
-                    var product = eachData.getValue(ProductModel::class.java)
+                    var product = eachData.getValue(UserModel::class.java)
                     if (product != null) {
                         Log.d("data from firebase", product.name)
                         Log.d("data from firebase", product.description)

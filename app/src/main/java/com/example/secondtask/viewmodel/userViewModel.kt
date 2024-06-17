@@ -5,11 +5,11 @@ package com.example.secondtask.viewmodel
 import android.net.Uri
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-import com.example.crud.model.ProductModel
+import com.example.crud.model.UserModel
 import com.example.secondtask.repository.ProductRepository
 
 
-class ProductViewModel(val repository: ProductRepository) : ViewModel() {
+class userViewModel(val repository: ProductRepository) : ViewModel() {
     fun updateProduct(id: String , data: MutableMap<String,Any>,callback: (Boolean, String?) -> Unit){
         repository.updateProduct(id,data,callback)
     }
@@ -21,11 +21,11 @@ class ProductViewModel(val repository: ProductRepository) : ViewModel() {
         }
 
     }
-    fun addProduct(productModel: ProductModel, callback: (Boolean, String?) -> Unit) {
+    fun addProduct(productModel: UserModel, callback: (Boolean, String?) -> Unit) {
         repository.addProduct(productModel, callback)
     }
-    private var _productList=MutableLiveData<List<ProductModel>?>()
-    var productList=MutableLiveData<List<ProductModel>?>()
+    private var _productList=MutableLiveData<List<UserModel>?>()
+    var productList=MutableLiveData<List<UserModel>?>()
         get() = _productList
 
     var _loadingState=MutableLiveData<Boolean>()

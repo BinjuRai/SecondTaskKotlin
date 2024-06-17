@@ -3,7 +3,6 @@ package com.example.secondtask.activity
 import android.content.Intent
 import android.content.pm.PackageManager
 import android.net.Uri
-import android.os.Build
 import android.os.Bundle
 import android.widget.Toast
 import androidx.activity.enableEdgeToEdge
@@ -11,20 +10,18 @@ import androidx.activity.result.ActivityResultCallback
 import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatActivity
-import androidx.core.app.ActivityCompat
-import androidx.core.content.ContextCompat
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
-import com.example.crud.R
-import com.example.crud.databinding.ActivityAddProduct2Binding
-import com.example.crud.model.ProductModel
-import com.example.crud.reposotory.ProductRepositoryImpl
-import com.example.crud.utils.ImageUtils
-import com.example.crud.utils.LoadingUtils
-import com.example.crud.viewmodel.ProductViewModel
+import com.example.crud.model.UserModel
+
+
+import com.example.secondtask.R
+import com.example.secondtask.databinding.ActivityAddProductBinding
+import com.example.secondtask.repository.ProductRepositoryImpl
+import com.example.secondtask.utils.ImageUtils
+import com.example.secondtask.utils.LoadingUtils
+import com.example.secondtask.viewmodel.userViewModel
 import com.google.firebase.database.FirebaseDatabase
-import com.google.firebase.storage.FirebaseStorage
-import com.google.firebase.storage.StorageReference
 import com.squareup.picasso.Picasso
 import java.util.UUID
 
@@ -32,11 +29,13 @@ class AddProductActivity : AppCompatActivity() {
 
     lateinit var loadingUtils: LoadingUtils
 
+
     var firebaseDatabase: FirebaseDatabase = FirebaseDatabase.getInstance()
     var ref = firebaseDatabase.reference.child("products")
 
     lateinit var imageUtils: ImageUtils
-    lateinit var productViewModel: ProductViewModel
+
+    lateinit var productViewModel: userViewModel
 
     lateinit var addProductBinding: ActivityAddProductBinding
 
@@ -73,8 +72,8 @@ class AddProductActivity : AppCompatActivity() {
                 Picasso.get().load(it).into(addProductBinding.imageBrowse)
             }
         }
-        var repo=ProductRepositoryImpl()
-        productViewModel= ProductViewModel(repo)
+        var repo= ProductRepositoryImpl()
+        productViewModel= userViewModel(repo)
 
 
         addProductBinding.imageBrowse.setOnClickListener {
@@ -135,7 +134,7 @@ class AddProductActivity : AppCompatActivity() {
         var name: String = addProductBinding.editTextProductName.text.toString()
         var price: Int = addProductBinding.editTextProductPrice.text.toString().toInt()
         var description: String = addProductBinding.editTextProductDes.text.toString()
-        var data = ProductModel("", name, price, description, url, imageName)
+        var data = UserModel("", name, price, description, url, imageName)
 
         productViewModel.addProduct(data) { success, message ->
             if (success) {
