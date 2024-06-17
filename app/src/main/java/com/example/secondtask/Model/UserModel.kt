@@ -33,8 +33,9 @@ data class UserModel(
     override fun writeToParcel(parcel: Parcel, flags: Int) {
         parcel.writeString(id)
         parcel.writeString(name)
-        parcel.writeInt(email)
+        parcel.writeString(email)
         parcel.writeString(password)
+        parcel.writeInt(phone)
         parcel.writeString(url)
         parcel.writeString(imageName)
 

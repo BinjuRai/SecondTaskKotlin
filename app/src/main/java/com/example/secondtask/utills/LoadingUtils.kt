@@ -15,6 +15,7 @@ class LoadingUtils (val activity: Activity){
         builder.setCancelable(false)
         alertDialog=builder.create()
         alertDialog.show()
+
     }
     fun dismiss(){
         alertDialog.dismiss()

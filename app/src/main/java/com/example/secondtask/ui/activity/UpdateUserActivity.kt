@@ -2,7 +2,7 @@ package com.example.secondtask.activity
 
 import com.example.crud.model.UserModel
 import com.example.secondtask.R
-import com.example.secondtask.repository.ProductRepositoryImpl
+import com.example.secondtask.repository.UserRepositoryImpl
 import com.example.secondtask.utils.ImageUtils
 import android.content.Intent
 import android.content.pm.PackageManager
@@ -14,9 +14,11 @@ import androidx.activity.result.ActivityResultLauncher
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
+import com.example.secondtask.databinding.ActivityUpdateUserBinding
 
-import com.example.userauthentication.databinding.ActivityUpdateUserBinding
-import com.example.userauthentication.databinding.EditUserBinding
+import com.example.secondtask.viewmodel.userViewModel
+
+
 import com.google.firebase.database.FirebaseDatabase
 import com.squareup.picasso.Picasso
 
@@ -24,16 +26,23 @@ class UpdateUserActivity : AppCompatActivity() {
     var firebaseDatabase: FirebaseDatabase = FirebaseDatabase.getInstance()
     var ref = firebaseDatabase.reference.child("user")
 
-    lateinit var updateUserBinding: ActivityUpdateUserBinding
+    lateinit var updateUserBinding:ActivityUpdateUserBinding
+
+
+
     var id = ""
     var imageName= ""
 
     lateinit var activityResultLauncher : ActivityResultLauncher<Intent>
     var imageUri : Uri? = null
 
-    lateinit var  userViewModel: UserModel
+    lateinit var  userViewModel: userViewModel
 
     lateinit var editBinding: EditUserBinding
+
+    class EditUserBinding {
+
+    }
 
     override fun onRequestPermissionsResult(
         requestCode: Int,
@@ -58,27 +67,28 @@ class UpdateUserActivity : AppCompatActivity() {
         updateUserBinding = ActivityUpdateUserBinding.inflate(layoutInflater)
         setContentView(updateUserBinding.root)
 
-        val repo = ProductRepositoryImpl()
-        userViewModel = UserModel(repo)
+        val repo = UserRepositoryImpl()
+        userViewModel = userViewModel(repo)
 
         imageUtils = ImageUtils(this)
         imageUtils.registerActivity {
             imageUri = it
 
-            Picasso.get().load(it).into(updateUserBinding.imageupdate)
+            Picasso.get().load(it).into(updateUserBinding.ImageViewU)
         }
         var user: UserModel?= intent.getParcelableExtra("user")
         id = user?.id.toString()
         imageName = user?.imageName.toString()
-        updateUserBinding.updateemail.setText(user?.email)
-        updateUserBinding.updateNumber.setText(user?.number.toString())
-        updateUserBinding.updatePassword.setText(user?.password)
-        Picasso.get().load(user?.url).into(updateUserBinding.imageupdate)
+        updateUserBinding.editUEmail.setText(user?.email)
+        updateUserBinding.editUNumber.setText(user?.number.toString())
+        updateUserBinding.editUPassword.setText(user?.password)
 
-        updateUserBinding.buttonupdate.setOnClickListener {
+        Picasso.get().load(user?.url).into(updateUserBinding.ImageViewU)
+
+        updateUserBinding.btnupdate.setOnClickListener {
             uploadImage()
         }
-        updateUserBinding.imageupdate.setOnClickListener {
+        updateUserBinding.ImageViewU.setOnClickListener {
             imageUtils.launchGallery(this@UpdateUserActivity)
 
         }
@@ -90,9 +100,9 @@ class UpdateUserActivity : AppCompatActivity() {
         }
     }
     fun updateUser(url:String){
-        var updatedemail : String = updateUserBinding.updateemail.text.toString()
-        var updatednumber : Int = updateUserBinding.updateNumber.text.toString().toInt()
-        var updatedpassword : String = updateUserBinding.updatePassword.text.toString()
+        var updatedemail : String = updateUserBinding.editUEmail.text.toString()
+        var updatednumber : Int = updateUserBinding.editUNumber.text.toString().toInt()
+        var updatedpassword : String = updateUserBinding.editUPassword.text.toString()
 
         var data = mutableMapOf<String,Any>()
         data["email"]= updatedemail
@@ -101,24 +111,28 @@ class UpdateUserActivity : AppCompatActivity() {
         data["url"]= url
 
         userViewModel.updateUser(id,data){
-                success,message ->
+            success,message->
             if (success){
                 Toast.makeText(applicationContext,message, Toast.LENGTH_LONG).show()
             }else{
                 Toast.makeText(applicationContext,message, Toast.LENGTH_LONG).show()
             }
-        }
-    }
-    private fun uploadImage() {
-        imageUri?.let{
-            userViewModel.uploadImage(imageName,it){
-                success,imageUrl ->
-                if(success){
-                    updateUser(imageUrl.toString())
-                }
-            }
+
+           }
+
         }
 
+
+    fun uploadImage() {
+    imageUri?.let {
+        userViewModel.uploadImage(imageName, it){
+                success, imageUrl ->
+            if (success){
+                updateUser(imageUrl.toString())
+            }
+        }
     }
+
+}
 }
 

@@ -3,7 +3,7 @@ package com.example.secondtask.repository
 import android.net.Uri
 import com.example.crud.model.UserModel
 
-interface ProductRepository {
+interface UserRepository {
 
     fun uploadImage(imageName: String, imageUri: Uri, callback: (Boolean, String?) -> Unit)
 

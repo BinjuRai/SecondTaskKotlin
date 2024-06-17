@@ -15,7 +15,9 @@ import androidx.core.view.WindowInsetsCompat
 import com.example.crud.model.UserModel
 import com.example.secondtask.R
 import com.example.secondtask.databinding.ActivityRegistrationBinding
+import com.example.secondtask.repository.UserRepositoryImpl
 import com.example.secondtask.utils.ImageUtils
+import com.example.secondtask.viewmodel.userViewModel
 
 import com.google.firebase.database.FirebaseDatabase
 import com.squareup.picasso.Picasso
@@ -33,7 +35,7 @@ class RegistrationActivity : AppCompatActivity() {
 
     lateinit var imageUtils: ImageUtils
 
-    lateinit var userViewmodel: UserModel
+    lateinit var userViewmodel: userViewModel
 
     override fun onRequestPermissionsResult(
         requestCode: Int,
@@ -57,6 +59,9 @@ class RegistrationActivity : AppCompatActivity() {
         registrationBinding = ActivityRegistrationBinding.inflate(layoutInflater)
         setContentView(registrationBinding.root)
 
+        val repo = UserRepositoryImpl()
+        userViewmodel = userViewModel(repo)
+
         imageUtils = ImageUtils(this)
         imageUtils.registerActivity { url ->
             url.let {
@@ -78,12 +83,7 @@ class RegistrationActivity : AppCompatActivity() {
         }
 
         registrationBinding.buttonregister2.setOnClickListener {
-            var name : String = registrationBinding.editname.text.toString()
-            var email : String = registrationBinding.editemail.text.toString()
-            var number : Int = registrationBinding.editNumber.text.toString().toInt()
-            var password : String = registrationBinding.editPassword.text.toString()
-
-            Toast.makeText(applicationContext, "Registration Success", Toast.LENGTH_LONG).show()
+           uploadImage()
         }
         ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main)) { v, insets ->
             val systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars())
@@ -111,6 +111,9 @@ class RegistrationActivity : AppCompatActivity() {
         var data = UserModel("",name,email,number,password,url,imageName)
 
 
+        userViewmodel.addProduct(data){
+            success,message->
+        }
     }
 
 

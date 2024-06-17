@@ -13,7 +13,7 @@ import com.google.firebase.database.ValueEventListener
 import com.google.firebase.storage.FirebaseStorage
 import com.google.firebase.storage.StorageReference
 
-class ProductRepositoryImpl: ProductRepository {
+class UserRepositoryImpl: UserRepository {
     var firebaseDatabase: FirebaseDatabase = FirebaseDatabase.getInstance()
     var ref = firebaseDatabase.reference.child("products")
     var firebaseStorage: FirebaseStorage = FirebaseStorage.getInstance()
@@ -64,8 +64,8 @@ class ProductRepositoryImpl: ProductRepository {
                     var product = eachData.getValue(UserModel::class.java)
                     if (product != null) {
                         Log.d("data from firebase", product.name)
-                        Log.d("data from firebase", product.description)
-                        Log.d("data from firebase", product.price.toString())
+                        Log.d("data from firebase", product.password)
+                        Log.d("data from firebase", product.phone.toString())
 
                         productList.add(product)
 
