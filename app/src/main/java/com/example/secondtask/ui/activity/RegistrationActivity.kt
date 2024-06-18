@@ -1,7 +1,5 @@
 package com.example.secondtask.ui.activity
 
-
-
 import android.content.Intent
 import android.content.pm.PackageManager
 import android.net.Uri
@@ -94,7 +92,10 @@ class RegistrationActivity : AppCompatActivity() {
     fun uploadImage(){
         val imageName = UUID.randomUUID().toString()
         imageUri?.let {
-            userViewmodel.uploadImage(imageName,it){ success, imageUrl ->
+            userViewmodel.uploadImage(
+                imageName,
+                it
+            ){ success, imageUrl ->
                 if (success){
                     addUser(imageUrl.toString(),imageName.toString())
                 }

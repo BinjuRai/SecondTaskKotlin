@@ -21,9 +21,4 @@ class LoadingUtils (val activity: Activity){
         alertDialog.dismiss()
     }
 
-    companion object {
-        fun dismiss() {
-            TODO("Not yet implemented")
-        }
-    }
 }

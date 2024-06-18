@@ -7,7 +7,6 @@ import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import com.example.crud.adapter.UserAdapter
 import com.example.secondtask.R
-import com.example.secondtask.activity.UpdateUserActivity
 import com.example.secondtask.databinding.ActivityLoginBinding
 import com.example.secondtask.repository.UserRepositoryImpl
 import com.example.secondtask.viewmodel.userViewModel
@@ -88,6 +87,7 @@ class LoginActivity : AppCompatActivity() {
                 }
             }
         }).attachToRecyclerView(loginBinding.recyclerView)
+
         loginBinding.floatingActionButton.setOnClickListener {
             var intent = Intent(this@LoginActivity, UpdateUserActivity::class.java)
             startActivity(intent)

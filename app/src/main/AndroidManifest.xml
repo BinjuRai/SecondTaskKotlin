@@ -22,24 +22,11 @@
         <activity
             android:name=".ui.activity.RegistrationActivity"
             android:exported="false" />
-        <activity
-            android:name=".ui.activity.ForgetActivity"
-            android:exported="false" />
-        <activity
-            android:name=".activity.UpdateProductActivity"
-            android:exported="false" />
-        <activity
-            android:name=".activity.AddProductActivity"
-            android:exported="false" />
-        <activity
-            android:name=".ui.activity.DashboardActivity"
-            android:exported="true">
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
 
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
-        </activity>
+        <activity
+            android:name=".ui.activity.UpdateUserActivity"
+            android:exported="false" />
+
         <activity
             android:name=".activity.MainActivity"
             android:exported="true">

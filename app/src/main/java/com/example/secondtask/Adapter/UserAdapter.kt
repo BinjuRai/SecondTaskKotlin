@@ -14,7 +14,7 @@ import androidx.recyclerview.widget.RecyclerView
 
 import com.example.crud.model.UserModel
 import com.example.secondtask.R
-import com.example.secondtask.activity.UpdateUserActivity
+import com.example.secondtask.ui.activity.UpdateUserActivity
 import com.squareup.picasso.Callback
 import com.squareup.picasso.Picasso
 import java.lang.Exception

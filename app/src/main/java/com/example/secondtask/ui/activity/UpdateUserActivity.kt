@@ -1,4 +1,4 @@
-package com.example.secondtask.activity
+package com.example.secondtask.ui.activity
 
 import com.example.crud.model.UserModel
 import com.example.secondtask.R
@@ -8,6 +8,7 @@ import android.content.Intent
 import android.content.pm.PackageManager
 import android.net.Uri
 import android.os.Bundle
+import android.widget.ImageView
 import android.widget.Toast
 import androidx.activity.enableEdgeToEdge
 import androidx.activity.result.ActivityResultLauncher
@@ -18,6 +19,7 @@ import com.example.secondtask.databinding.ActivityUpdateUserBinding
 import com.example.secondtask.utils.LoadingUtils
 
 import com.example.secondtask.viewmodel.userViewModel
+import com.google.firebase.auth.FirebaseAuth
 
 
 import com.google.firebase.database.FirebaseDatabase
@@ -38,11 +40,9 @@ class UpdateUserActivity : AppCompatActivity() {
 
     lateinit var userViewModel: userViewModel
 
-    lateinit var editBinding: EditUserBinding
+    lateinit var imageUtils: ImageUtils
 
-    class EditUserBinding {
-
-    }
+    lateinit var loadingUtils: LoadingUtils
 
     override fun onRequestPermissionsResult(
         requestCode: Int,
@@ -59,7 +59,6 @@ class UpdateUserActivity : AppCompatActivity() {
         }
     }
 
-    lateinit var imageUtils: ImageUtils
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -71,15 +70,19 @@ class UpdateUserActivity : AppCompatActivity() {
         val repo = UserRepositoryImpl()
         userViewModel = userViewModel(repo)
 
-        imageUtils = ImageUtils(this)
-        imageUtils.registerActivity {
-            imageUri = it
+        loadingUtils = LoadingUtils(this)
 
-            Picasso.get().load(it).into(updateUserBinding.ImageViewU)
+
+        imageUtils = ImageUtils(this)
+        imageUtils.registerActivity { url ->
+            url.let {
+                imageUri = url
+                Picasso.get().load(url).into(updateUserBinding.ImageViewU)
+            }
         }
         var user: UserModel? = intent.getParcelableExtra("user")
         id = user?.id.toString()
-        imageName = user?.imageName.toString()
+        imageName= user?.imageName.toString()
         updateUserBinding.editUEmail.setText(user?.email)
         updateUserBinding.editUNumber.setText(user?.number.toString())
         updateUserBinding.editUPassword.setText(user?.password)
@@ -87,12 +90,19 @@ class UpdateUserActivity : AppCompatActivity() {
         Picasso.get().load(user?.url).into(updateUserBinding.ImageViewU)
 
         updateUserBinding.btnupdate.setOnClickListener {
-            uploadImage()
+
+            if(imageUri == null){
+                updateUser(user?.url.toString())
+            }else{
+
+                uploadImage()
+            }
         }
         updateUserBinding.ImageViewU.setOnClickListener {
             imageUtils.launchGallery(this@UpdateUserActivity)
 
         }
+
 
         ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main)) { v, insets ->
             val systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars())
@@ -101,7 +111,9 @@ class UpdateUserActivity : AppCompatActivity() {
         }
     }
 
+
     fun updateUser(url: String) {
+        loadingUtils.showLoading()
         var updatedemail: String = updateUserBinding.editUEmail.text.toString()
         var updatednumber: Int = updateUserBinding.editUNumber.text.toString().toInt()
         var updatedpassword: String = updateUserBinding.editUPassword.text.toString()
@@ -115,8 +127,10 @@ class UpdateUserActivity : AppCompatActivity() {
         userViewModel.updateUser(id, data) { success, message ->
             if (success) {
                 Toast.makeText(applicationContext, message, Toast.LENGTH_LONG).show()
+                loadingUtils.dismiss()
             } else {
                 Toast.makeText(applicationContext, message, Toast.LENGTH_LONG).show()
+                loadingUtils.dismiss()
             }
 
         }
@@ -125,25 +139,25 @@ class UpdateUserActivity : AppCompatActivity() {
 
 
     fun uploadImage() {
+        loadingUtils.showLoading()
         imageUri?.let {
             userViewModel.uploadImage(imageName, it) { success, imageUrl ->
                 if (success) {
                     updateUser(imageUrl.toString())
                 }
             }
-            val data = UserModel(id, imageName)
 
-            userViewModel.uploadImage(data) { success, message ->
-                if (success) {
-                    LoadingUtils.dismiss()
-                    Toast.makeText(applicationContext, message, Toast.LENGTH_LONG).show()
-                    finish()
-                } else {
-                    LoadingUtils.dismiss()
-                    Toast.makeText(applicationContext, message, Toast.LENGTH_LONG).show()
-                }
-
-            }
+//            userViewModel.uploadImage(imageName,imageUri) { success, message ->
+//                if (success) {
+//                    LoadingUtils.dismiss()
+//                    Toast.makeText(applicationContext, message, Toast.LENGTH_LONG).show()
+//                    finish()
+//                } else {
+//                    LoadingUtils.dismiss()
+//                    Toast.makeText(applicationContext, message, Toast.LENGTH_LONG).show()
+//                }
+//
+//            }
 
 
         }
